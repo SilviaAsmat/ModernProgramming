@@ -1,0 +1,117 @@
+Name:   Silvia Asmat
+Course:   COSC 4301 - Modern Programming
+Program:  Five
+Due Date: 11/04/2024
+
+Enter Fraction 1: 
+Enter the numerator of the fraction: 
+6
+Enter the denominator of the fraction: 
+2
+Enter Fraction 2: 
+Enter the numerator of the fraction: 
+8
+Enter the denominator of the fraction: 
+2
+Enter the operation number you would like to perform: 
+Operations: 
+0 - Add
+1 - Subtract
+2 - Multiply
+3 - Divide
+4 - Display Original Fractions
+5 - Enter New Fractions (Enter 0/0 for both to exit)
+0
+Adding
+
+******************************************************
+Result in Fraction Format: 7 / 1
+Result in Improper Format: 7
+******************************************************
+
+Enter the operation number you would like to perform: 
+Operations: 
+0 - Add
+1 - Subtract
+2 - Multiply
+3 - Divide
+4 - Display Original Fractions
+5 - Enter New Fractions (Enter 0/0 for both to exit)
+1
+Subtracting
+
+******************************************************
+Result in Fraction Format: -1 / 1
+Result in Improper Format: -1
+******************************************************
+
+Enter the operation number you would like to perform: 
+Operations: 
+0 - Add
+1 - Subtract
+2 - Multiply
+3 - Divide
+4 - Display Original Fractions
+5 - Enter New Fractions (Enter 0/0 for both to exit)
+2
+Multiplying
+
+******************************************************
+Result in Fraction Format: 12 / 1
+Result in Improper Format: 12
+******************************************************
+
+Enter the operation number you would like to perform: 
+Operations: 
+0 - Add
+1 - Subtract
+2 - Multiply
+3 - Divide
+4 - Display Original Fractions
+5 - Enter New Fractions (Enter 0/0 for both to exit)
+3
+Dividing
+
+******************************************************
+Result in Fraction Format: 3 / 4
+Result in Improper Format: 3 / 4
+******************************************************
+
+Enter the operation number you would like to perform: 
+Operations: 
+0 - Add
+1 - Subtract
+2 - Multiply
+3 - Divide
+4 - Display Original Fractions
+5 - Enter New Fractions (Enter 0/0 for both to exit)
+4
+
+******************************************************
+Fraction 1: 6 / 2
+Fraction 2: 8 / 2
+******************************************************
+
+Enter the operation number you would like to perform: 
+Operations: 
+0 - Add
+1 - Subtract
+2 - Multiply
+3 - Divide
+4 - Display Original Fractions
+5 - Enter New Fractions (Enter 0/0 for both to exit)
+5
+Enter Fraction 1: 
+Enter the numerator of the fraction: 
+a
+Invalid input. Please enter an integer.
+!
+Invalid input. Please enter an integer.
+0 
+Enter the denominator of the fraction: 
+0
+Enter Fraction 2: 
+Enter the numerator of the fraction: 
+0
+Enter the denominator of the fraction: 
+0

@@ -1,0 +1,56 @@
+Name:     Silvia Asmat
+Course:   COSC 4301 Modern Programming
+Program:  One
+Due Date: 9/15/2024
+
+Workers processed individually:
+
+John Smith
+Social Security Number: 111-11-1111
+Earned: $800.00
+
+Karen Price
+Social Security Number: 222-22-2222
+Earned: $670.00
+
+John Doe
+Social Security Number: 666-66-6666
+Earned: $921.25
+
+Sue Jones
+Social Security Number: 333-33-3333
+Earned: $600.00
+
+Bob Lewis
+Social Security Number: 444-44-4444
+earned: $500.00
+
+Rick Bridges
+Social Security Number: 555-55-5555
+Earned: $900.00
+
+Workers processed polymorphically:
+
+John Smith
+Social Security Number: 111-11-1111
+Earned: $800.00
+
+Karen Price
+Social Security Number: 222-22-2222
+Earned: $670.00
+
+John Doe
+Social Security Number: 666-66-6666
+Earned: $921.25
+
+Sue Jones
+Social Security Number: 333-33-3333
+Earned: $600.00
+
+Bob Lewis
+Social Security Number: 444-44-4444
+Earned: $545.00
+
+Rick Bridges
+Social Security Number: 555-55-5555
+Earned: $900.00

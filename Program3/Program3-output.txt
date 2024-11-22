@@ -1,0 +1,93 @@
+Server:
+
+silviaasmat@Silvias-MBP Program3 % java Server                 
+[TCP Server says] TCP Server created on port 4301
+
+[TCP Server says] Waiting for connection.....
+[TCP Server says] New client connected.
+
+[TCP Server says] Waiting for connection.....
+TCP Server says: Message received from client: -1 4
+Server Sending: Error: Negative Numbers. Please enter two positive integers separated by commas or spaces.
+[TCP Server says] New client connected.
+
+[TCP Server says] Waiting for connection.....
+TCP Server says: Message received from client: 4 2
+Server Sending: Error: First Number Greater. Please enter two integers where the first number is less than the second number.
+Server Sending: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Server Sending: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Server Sending: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Server Sending: Prime Numbers: [2, 3, 5, 7] Sum: 17.0 Mean: 4.25 Standard Deviation: 4.663689526544408
+Server Sending: Error: Negative Numbers. Please enter two positive integers separated by commas or spaces.
+Server Sending: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Server Sending: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Server Sending: Error: Negative Numbers. Please enter two positive integers separated by commas or spaces.
+Server Sending: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Server Sending: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Server Sending: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Server Sending: Error: Not Integers. Please enter two integers separated by commas or spaces.
+Server Sending: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Server Sending: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+^C%
+
+
+Client 1:
+silviaasmat@Silvias-MBP Program3 % java Client
+Client connected to server.
+Enter two integers separated by commas or spaces or "Quit" to quit: -1 4
+Sending: -1 4
+Client receiving from server: Error: Negative Numbers. Please enter two positive integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: 1, 10
+Sending: 1, 10
+Client receiving from server: Prime Numbers: [2, 3, 5, 7] Sum: 17.0 Mean: 4.25 Standard Deviation: 4.663689526544408
+Enter two integers separated by commas or spaces or "Quit" to quit: 1 -10
+Sending: 1 -10
+Client receiving from server: Error: Negative Numbers. Please enter two positive integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: !
+Sending: !
+Client receiving from server: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: 
+Sending: 
+Client receiving from server: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: Quit
+Closing socket.% 
+
+
+Client 2:
+silviaasmat@Silvias-MBP Program3 % java Client
+Client connected to server.
+Enter two integers separated by commas or spaces or "Quit" to quit: 4 2
+Sending: 4 2
+Client receiving from server: Error: First Number Greater. Please enter two integers where the first number is less than the second number.
+Enter two integers separated by commas or spaces or "Quit" to quit: 1 5
+Sending: 1 5
+Client receiving from server: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Enter two integers separated by commas or spaces or "Quit" to quit:  1 5
+Sending:  1 5
+Client receiving from server: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Enter two integers separated by commas or spaces or "Quit" to quit: 1,5
+Sending: 1,5
+Client receiving from server: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Enter two integers separated by commas or spaces or "Quit" to quit: -1 -1
+Sending: -1 -1
+Client receiving from server: Error: Negative Numbers. Please enter two positive integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: ,,,1 5
+Sending: ,,,1 5
+Client receiving from server: Prime Numbers: [2, 3, 5] Sum: 10.0 Mean: 3.3333333333333335 Standard Deviation: 3.559026084010437
+Enter two integers separated by commas or spaces or "Quit" to quit: 1!2
+Sending: 1!2
+Client receiving from server: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: 1 ! 2
+Sending: 1 ! 2
+Client receiving from server: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: 1.1 2.2
+Sending: 1.1 2.2
+Client receiving from server: Error: Not Integers. Please enter two integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: bye 
+Sending: bye
+Client receiving from server: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: quit
+Sending: quit
+Client receiving from server: Error: Incorrct Amount of Arguments. Please enter two integers separated by commas or spaces.
+Enter two integers separated by commas or spaces or "Quit" to quit: Quit
+Closing socket.% 
