@@ -8,7 +8,8 @@ public class CashRegister
 {
     private final List<StoreItem> cart;
     private final List<String> cashiers;
-
+    private final Scanner scan = new Scanner(System.in);
+    
     // Constructor
     public CashRegister() 
     {
@@ -16,13 +17,14 @@ public class CashRegister
         cashiers = new ArrayList<>();
     }
 
+
     // Methods
     public void purchaseItem(List<StoreItem> inventory , String[] itemDescriptions)
     {
         for (String description : itemDescriptions) {
             String trimmedDescription = description.trim();
             StoreItem item = inventory.stream()
-                                    .filter(i -> i.getItemDescription().equals(trimmedDescription))
+                                    .filter(i -> i.getItemDescription().equals(trimmedDescription) && i.getUnitsInInventory() > 0)
                                     .findFirst()
                                     .orElse(null);
             if (item != null) {
@@ -47,7 +49,9 @@ public class CashRegister
 
     public void showItems() 
     {
-        cart.forEach(item -> System.out.println(item.getItemDescription() + ": " + item.getPrice()));
+        cart.stream()
+            .sorted((item1, item2) -> item1.getItemDescription().compareTo(item2.getItemDescription()))
+            .forEach(item -> System.out.println(item.getItemDescription() + ": " + item.getPrice()));
     }
 
     public void clearRegister(List<StoreItem> inventory) 
@@ -63,8 +67,8 @@ public class CashRegister
                 inventory.add(new StoreItem(item.getItemNumber(), item.getItemDescription(), 1, item.getPrice()));
             }
         }
-        //inventory.addAll(cart);
         cart.clear();
+        System.out.println("Cash register cleared.");
     }
 
     public void showInventory(List<StoreItem> inventory) 
@@ -72,15 +76,16 @@ public class CashRegister
         inventory.forEach(item -> System.out.println(item.getItemDescription() + ": " + item.getUnitsInInventory()));
     }
 
-    public void checkOut() 
+    public Boolean checkOut() 
     {
+        boolean continueLoop = true;
+        showItems();
         double total = getTotal();
         double tax = total * 0.0825;
-        double finalPrice = total + total * 0.0825;
+        double finalPrice = total + tax;
         System.out.println("===============================================================");
-        System.out.println("Invoice\nTotal: "+ total +"\nTax: " + tax + "\nFinal Price: " + finalPrice);
-        System.out.println("Would you like to complete the purchase?(0 for no / 1 for yes\n\"===============================================================\")");
-        Scanner scan = new Scanner(System.in);
+        System.out.printf("Invoice\nTotal: %.2f\nTax: %.2f\nFinal Price: %.2f\n", total, tax, finalPrice);
+        System.out.println("Would you like to complete the purchase?(0 for no / 1 for yes)\n===============================================================");
         String input = scan.nextLine();
         int choice;
             try 
@@ -91,7 +96,7 @@ public class CashRegister
                     case 1 -> {
                         printReceiptToFile();
                         System.out.println("Purchase completed. Receipt printed to file.");
-                        cart.clear();
+                        continueLoop = false;
                     }
                     case 0 -> {
                         clearRegister(cart);
@@ -99,39 +104,34 @@ public class CashRegister
                     }
                     default -> System.out.println("Invalid choice.");
                 }
-                scan.close();
             } 
             catch (NumberFormatException e) 
             {
                 System.out.println("Invalid input.");
             }
-        // int choice = Integer.parseInt(input);
-        // if (choice == 1) {
-        //     printReceiptToFile();
-        //     System.out.println("Purchase completed. Receipt printed to file.");
-        //     cart.clear();
-        //     scan.close();
-        // } else if (choice == 0) {
-        //     clearRegister(cart);
-        //     System.out.println("Purchase cancelled.");
-        // } else {
-        //     System.out.println("Invalid choice.");
-        // }
+        return continueLoop;
     }
 
+   
+
     public void displayMenu(List<StoreItem> inventory) 
-    {
+    {   
+        int length = inventory.size();
+        String[] menuOptions = {"Purchase item(s)", "Show Cash Register", "Clear Cash Register", "Show inventory", "Check out"};
         //Print out item descriptions from inventory
         System.out.println("===============================================================");
         System.out.println("Available items:");
         System.out.println("===============================================================");
-        inventory.forEach(item -> System.out.println(item.getItemDescription()));
+        for(int i = 0; i < length; i++)
+        {
+            System.out.println(i + ". " + inventory.get(i).getItemDescription());
+        }
         System.out.println("===============================================================");
-        System.out.println("1 - Purchase an Item:");
-        System.out.println("2 - Show Cash Register");
-        System.out.println("3 - Clear Cash Register");
-        System.out.println("4 - Show Inventory");
-        System.out.println("5 - Check Out");
+        System.out.println("Menu Options (Enter Option Number):");
+        System.out.println("===============================================================");
+        for (int i = 0; i < menuOptions.length; i++) {
+            System.out.println((i + length) + ". " + menuOptions[i]);
+        }
         System.out.println("===============================================================");
         System.out.println("Enter any number under 0 to exit");
         System.out.println("===============================================================");
@@ -163,8 +163,8 @@ public class CashRegister
         return cashiers.get((int) (Math.random() * cashiers.size()));
     }
     
-    public void addCashier(String cashier) 
+    public void setCashiers(List<String> cashier) 
     {
-        cashiers.add(cashier);
+        cashiers.addAll(cashier);
     }
 }
