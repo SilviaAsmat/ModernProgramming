@@ -139,6 +139,9 @@ public class CashRegister
 
     public void printReceiptToFile() 
     {
+        double total = getTotal();
+        double tax = total * 0.0825;
+        double finalPrice = total + tax;
         // Print receipt to file Program6-output.txt
         try (PrintWriter writer = new PrintWriter("Program6-output.txt")) {
             writer.println("===============================================================");
@@ -150,9 +153,8 @@ public class CashRegister
             writer.println("===============================================================");
             cart.forEach(item -> writer.println(item.getItemDescription() + ": " + item.getPrice()));
             writer.println("===============================================================");
-            writer.println("Total: " + getTotal());
-            writer.println("Tax: " + getTotal() * 0.0825);
-            writer.println("Final Price: " + getTotal() + getTotal() * 0.0825);
+            writer.printf("Invoice\nTotal: %.2f\nTax: %.2f\nFinal Price: %.2f\n", total, tax, finalPrice);
+
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred while writing to the file");
         }

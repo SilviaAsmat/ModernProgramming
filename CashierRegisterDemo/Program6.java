@@ -135,42 +135,13 @@ public class Program6 {
 
     }
 
-    // private Integer handleChoice(int choice) 
-    // {
-    //     System.out.println("===============================================================");
-    //     switch (choice) 
-    //     {
-    //         case 1 -> {
-    //             System.out.print("Enter item description(s) to purchase: ");
-    //             String input = scanner.nextLine();
-    //             String[] itemDescriptions = input.trim().split("[\\s,]+");
-    //             Arrays.stream(itemDescriptions).forEach(System.out::println);
-    //             cashRegister.purchaseItem(inventory, itemDescriptions);
-    //             return 1;
-    //         }
-    //         case 2 -> {cashRegister.showItems();
-    //             return 1;}
-    //         case 3 -> {
-    //             cashRegister.clearRegister(inventory);
-    //             System.out.println("Cash register cleared.");
-    //             return 1;}
-    //         case 4 -> {cashRegister.showInventory(inventory);
-    //             return 1;}
-    //         case 5 -> {
-    //             return cashRegister.checkOut();}
-    //         default -> {System.out.println("Invalid choice.");
-    //             return 1;}
-    //     }
-    // }
-    // 
-
     public void loadMenuMap() {
         int length = inventory.size();
         menuOptionsMap.put(length, this::purchaseItem);
-        menuOptionsMap.put(1 + length, this::showCashRegister);
-        menuOptionsMap.put(2 + length, this::clearCashRegister);
-        menuOptionsMap.put(3 + length, this::showInventory);
-        menuOptionsMap.put(4 + length, this::checkOut);
+        menuOptionsMap.put(++length, this::showCashRegister);
+        menuOptionsMap.put(++length, this::clearCashRegister);
+        menuOptionsMap.put(++length, this::showInventory);
+        menuOptionsMap.put(++length, this::checkOut);
     }
 
     public boolean processMenuOption(int option) {
