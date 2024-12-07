@@ -1,37 +1,6 @@
 
 import java.util.Scanner;
 
-// Write  a  program  that  will  help  an  elementary  school  student  learn  to  evaluate  integer 
-// arithmetic expressions.  
-
-// Use a SecureRandom object to produce positive one-digit integers 
-// for the expression.  
-
-// The program should then prompt the student with a question based on 
-// the following: 
- 
-// After the student gets five questions correctly (the first try) at the current level, give him/her 
-// the opportunity to continue at that level, try a more difficult level or exit the program. If the 
-// student  chooses  to  continue  at  the  same  level,  after  every  correct  answer,  thereafter,  give 
-// him/her  another  opportunity  to  continue  at  that  level,  try  a  more  difficult  level  or  exit  the 
-// program. 
- 
-// If the student decides to try a more difficult level, let him/her answer five questions correctly 
-// before allowing him/her to try a more difficult level.   
- 
-// If the student is at the advanced level, give him/her the opportunity to exit the program, do not 
-// give him/her an opportunity to try a less difficult level. 
- 
-// After the student chooses to exit the program, calculate the percentage of questions that were 
-// answered correctly in each level and display it.  If the percentage in the Basic Level is lower 
-// than  80%,  display  the  percentage  and  this  message;  "Please  ask  your  teacher  for  extra 
-// help". 
- 
-// Log all the student’s interaction with the program in a file named Program7-
-// Output.txt. 
- 
-//Wednesday, December 11, 2024
-
 public class Program7 
 {
     private final Scanner scanner = new Scanner(System.in);
@@ -45,13 +14,60 @@ public class Program7
     public void startProgram() 
     {
         QuestionGenerator questionGenerator = new QuestionGenerator();
+        LevelManager levelManager = new LevelManager();
+        UserFeedbackMessage userFeedbackMessage = new UserFeedbackMessage();
         // Method to start the program
         System.out.println("Welcome! Let's start learning integer arithmetic expressions.");
-        System.out.println("Please enter the answer to the following " + DifficultyLevel.BASIC + " expression:");
-        questionGenerator.generateQuestion(DifficultyLevel.BASIC);
-        String input = scanner.nextLine();
-        System.out.println("You entered: " + input);
+        Question currentQuestion = questionGenerator.generateQuestion(2);
+        boolean isFirstTry = true;
+        //Beginning of loop, clarify exit conditions
+        while (true) 
+        { 
+            
+            System.out.println("Please enter the answer to the following " + levelManager.getLevelDisplayName() + " expression:");
+            System.out.println(currentQuestion.getDisplayName());
+            String input = scanner.nextLine();
+            System.out.println("You entered: " + input);
+            boolean correct = currentQuestion.isAnswerCorrect(input);
 
+            if (correct) 
+            {
+                System.out.println(userFeedbackMessage.getCorrectResponse());
+                levelManager.onGotAnswerCorrect(isFirstTry);
+                boolean userEligibleToMoveNextLevel = levelManager.isUserEligibleForNextLevel();
+                if(userEligibleToMoveNextLevel)
+                {
+                    System.out.println("Would you like to move to next level?(Y/N)");
+                    input = scanner.nextLine();
+                    if(input.equals("Y"))
+                    {
+
+                    }
+                    else if(input.equals("N"))
+                    {
+
+                    }
+                    else{
+                        System.out.println("Invalid Input");
+                    }
+                }
+
+                currentQuestion = questionGenerator.generateQuestion(2); // Correct answer, generate a new question
+                // call a method to add if student got it right on the first try - do I need a local variable to track that?s
+                // call a method to determine if level needs to be changed
+                
+                isFirstTry = true;
+            } 
+            else 
+            {
+                System.out.println(userFeedbackMessage.getIncorrectResponse());
+                levelManager.onGotAnswerWrong();
+                isFirstTry = false;
+                // Student tries again, display same question again, until they get it right
+            }
+
+        }
+        
         
     }
 }

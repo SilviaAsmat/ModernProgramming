@@ -1,4 +1,4 @@
-public enum DifficultyLevel {
+enum LevelType {
     BASIC,
     INTERMEDIATE,
     ADVANCED

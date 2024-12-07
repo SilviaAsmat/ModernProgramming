@@ -1,37 +1,27 @@
-// The student then inputs the answer.  Next, the program checks the student’s answer.  If it’s 
-// correct, display a message from the possible responses to a correct answer below, and ask 
-// another question.  If the answer is wrong, display a message from the possible responses to 
-// an  incorrect  answer  below,  display  the  same  question  again,  and  let  the  student  try  it 
-// repeatedly until the student finally gets it right.  
- 
-// Possible responses to a correct answer:  (Selected at random)  
-//      Excellent! 
-//      Very good! 
-//      Nice work! 
-//      Way to go! 
-//      Keep up the good work! 
- 
-// Possible responses to an incorrect answer:  (Selected at random)  
-//      That is incorrect! 
-//      No. Please try again! 
-//      Wrong, Try once more! 
-//      No. Don’t give up! 
-//      Incorrect. Keep trying! 
+import java.security.SecureRandom;
 
-public class ResponseEvaluator {
-    public boolean evaluate(String question, int studentAnswer) {
+
+
+
+public class ResponseEvaluator 
+{
+    private final SecureRandom random = new SecureRandom();
+
+    public boolean evaluate(String question, String studentAnswer) 
+    {
         // Evaluate the student's answer
-        // For now, let's assume the answer is always correct
-        return true;
+        Integer correctAnswer = solveQuestion(question);
+
+        return correctAnswer.equals(Integer.valueOf(studentAnswer));
     }
 
-    public String getCorrectResponse() {
-        // Return a random correct response message
-        return "Correct!";
-    }
+    private Integer solveQuestion(String question) 
+    {
+        Integer correctAnswer = -1;
 
-    public String getIncorrectResponse() {
-        // Return a random incorrect response message
-        return "Incorrect!";
+        // Solve the question and return the correct answer
+        return correctAnswer;
     }
 }
+
+
