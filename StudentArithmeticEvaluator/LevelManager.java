@@ -4,9 +4,7 @@ public class LevelManager
     private final LevelStatsTracker intermediate = new LevelStatsTracker();
     private final LevelStatsTracker advanced = new LevelStatsTracker();
     private LevelType currentLevel = LevelType.BASIC;
-    
 
-    
     public LevelManager() 
     {
 
@@ -61,4 +59,14 @@ public class LevelManager
         }
     }
 
+    public int getNumberOfOperatorsForCurrentLevel()
+    {
+        int numOfOperators = 0;
+        switch (currentLevel) {
+            case BASIC -> numOfOperators = 1;
+            case INTERMEDIATE -> numOfOperators = 2;
+            case ADVANCED -> numOfOperators = 3;
+        }
+        return numOfOperators;
+    }
 }

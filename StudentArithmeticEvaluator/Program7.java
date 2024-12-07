@@ -18,7 +18,8 @@ public class Program7
         UserFeedbackMessage userFeedbackMessage = new UserFeedbackMessage();
         // Method to start the program
         System.out.println("Welcome! Let's start learning integer arithmetic expressions.");
-        Question currentQuestion = questionGenerator.generateQuestion(2);
+        int numOfOperators = levelManager.getNumberOfOperatorsForCurrentLevel();
+        Question currentQuestion = questionGenerator.generateQuestion(numOfOperators);
         boolean isFirstTry = true;
         //Beginning of loop, clarify exit conditions
         while (true) 
