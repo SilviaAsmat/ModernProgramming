@@ -39,16 +39,13 @@ public class Program7
                 {
                     System.out.println("Would you like to move to next level?(Y/N)");
                     input = scanner.nextLine();
-                    if(input.equals("Y"))
-                    {
-
-                    }
-                    else if(input.equals("N"))
-                    {
-
-                    }
-                    else{
-                        System.out.println("Invalid Input");
+                    switch (input) {
+                        case "Y" -> {
+                            levelManager.moveToNextLevel();
+                        }
+                        case "N" -> {
+                        }
+                        default -> System.out.println("Invalid Input");
                     }
                 }
 
