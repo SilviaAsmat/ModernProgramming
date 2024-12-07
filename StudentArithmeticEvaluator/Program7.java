@@ -49,8 +49,8 @@ public class Program7
                         default -> System.out.println("Invalid Input");
                     }
                 }
-
-                currentQuestion = questionGenerator.generateQuestion(2); // Correct answer, generate a new question
+                numOfOperators = levelManager.getNumberOfOperatorsForCurrentLevel();
+                currentQuestion = questionGenerator.generateQuestion(numOfOperators); // Correct answer, generate a new question
                 // call a method to add if student got it right on the first try - do I need a local variable to track that?s
                 // call a method to determine if level needs to be changed
                 
