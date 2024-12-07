@@ -91,8 +91,7 @@ public class EvaluateExpression {
     {
         if (operator2 == '(' || operator2 == ')')
             return false;
-        return (operator1 != '*' && operator1 != '/')
-            || (operator2 != '+' && operator2 != '-');
+        return (operator1 != '*' && operator1 != '/') || (operator2 != '+' && operator2 != '-');
     }
 
     // Function to apply the operator to two operands
