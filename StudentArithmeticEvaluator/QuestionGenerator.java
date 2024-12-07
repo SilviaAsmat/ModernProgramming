@@ -53,7 +53,7 @@ public class QuestionGenerator
 
     public Question generateQuestion(int numberOfOperators)
     {
-        ArithmeticQuestion question = new ArithmeticQuestion();
+        ArithmeticQuestion question = new ArithmeticQuestion(numberOfOperators);
         return question;
     }
 }
