@@ -1,4 +1,4 @@
-public class ExpressionToken 
+public abstract class ExpressionToken 
 {
     
 }
