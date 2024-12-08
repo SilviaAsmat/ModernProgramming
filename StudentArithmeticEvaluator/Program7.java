@@ -57,6 +57,8 @@ public class Program7
                         case"Exit" ->{
                             //find way to exit loop
                             shouldExit = false;
+                            levelManager.displayLevelStats();
+                            logger.log(levelManager.displayLevelStats());
                         }
                         default -> System.out.println("Invalid Input");
                     }
