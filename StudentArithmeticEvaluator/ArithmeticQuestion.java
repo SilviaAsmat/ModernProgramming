@@ -66,7 +66,7 @@ public class ArithmeticQuestion implements Question
 
         if(operatorOne == operatorTwo)
         {
-            isHigher = true;
+            isHigher = false;
         }
         else if(operatorOne == '*' || operatorOne == '%')
         {
