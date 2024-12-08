@@ -51,6 +51,7 @@ public class ArithmeticQuestion implements Question
         }
 
     }
+
     /**
      * Compares two operators to determine if operator1 is higher
      * @param operator1
@@ -104,7 +105,8 @@ public class ArithmeticQuestion implements Question
     @Override
     public Boolean isAnswerCorrect(String answer) 
     {
-        return answer.equals("007");
+        int expectedResult = tree.evaluate();
+        return Integer.parseInt(answer) == expectedResult;
     }
     
 }
