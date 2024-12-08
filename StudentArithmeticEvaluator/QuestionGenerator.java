@@ -11,11 +11,10 @@ public class QuestionGenerator
         // 
     }
 
-
     private int generateOperand() 
     {
         // Generate a random operand
-        return random.nextInt(10);
+        return random.nextInt(1,10);
     }
 
     private char generateOperator() 
