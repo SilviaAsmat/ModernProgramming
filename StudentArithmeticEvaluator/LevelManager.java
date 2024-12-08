@@ -69,4 +69,25 @@ public class LevelManager
         }
         return numOfOperators;
     }
+
+    public String displayLevelStats()
+    {
+        StringBuilder grades = new StringBuilder();
+        grades.append(String.format("Basic: %.2f", basic.getPercentCorrect()));
+        if(!intermediate.isEmpty())
+        {
+            grades.append(String.format("\nIntermediate: %.2f", intermediate.getPercentCorrect()));
+        }
+
+        if(!advanced.isEmpty())
+        {
+            grades.append(String.format("\nAdvanced: %.2f", advanced.getPercentCorrect()));
+        }
+
+        if(basic.getPercentCorrect() < 80)
+        {
+            grades.append("\nPlease  ask  your  teacher  for  extra help");   
+        }
+        return grades.toString();
+    }
 }
