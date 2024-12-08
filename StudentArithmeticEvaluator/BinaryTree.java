@@ -27,7 +27,16 @@ public class BinaryTree
                     }
                     case '+' -> { return leftChildResult + rightChildResult;
                     }
-                    case '-' -> { return leftChildResult - rightChildResult;
+                    case '-' -> { 
+                        if (rightChildResult == 0)
+                        {
+                            // cannot divide by zero
+                            return 0;
+                        }
+                        else
+                        {
+                            return leftChildResult - rightChildResult;
+                        }
                     }
                    default -> throw new AssertionError();
                }
