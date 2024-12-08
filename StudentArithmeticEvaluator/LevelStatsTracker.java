@@ -19,11 +19,16 @@ public class LevelStatsTracker {
 
     public Double getPercentCorrect()
     {
-        return numberOfAnswersCorrect/(numberOfAnswersWrong+numberOfAnswersCorrect);
+        return (numberOfAnswersCorrect/(numberOfAnswersWrong+numberOfAnswersCorrect)) * 100;
     }
 
     public boolean isUserEligibleForNextLevel()
     {
         return gotAnswersRightOnFirstTry >= 5; //TODO: Move hardcoded 5 to constructor param
+    }
+
+    public boolean isEmpty()
+    {
+        return numberOfAnswersCorrect + numberOfAnswersWrong == 0;
     }
 }
