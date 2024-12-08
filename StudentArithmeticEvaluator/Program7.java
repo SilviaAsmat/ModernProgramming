@@ -25,7 +25,8 @@ public class Program7
         
         boolean isFirstTry = true;
         //Beginning of loop, clarify exit conditions
-        while (true) 
+        boolean shouldExit = true;
+        while (shouldExit) 
         { 
             
             System.out.println("Please enter the answer to the following " + levelManager.getLevelDisplayName() + " expression:");
@@ -55,6 +56,7 @@ public class Program7
                         }
                         case"Exit" ->{
                             //find way to exit loop
+                            shouldExit = false;
                         }
                         default -> System.out.println("Invalid Input");
                     }
