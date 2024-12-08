@@ -1,13 +1,12 @@
-
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class ArithmeticQuestion implements Question 
 {
-    private int numberOfOperators;
-    private ArrayList<ExpressionToken> tokens = new ArrayList<>();
+    private final int numberOfOperators;
+    private final ArrayList<ExpressionToken> tokens = new ArrayList<>();
+    private final BinaryTree tree = new BinaryTree();
     private final SecureRandom random = new SecureRandom();
-    private BinaryTree tree = new BinaryTree();
 
     public ArithmeticQuestion(int numberOfOperators) 
     {
@@ -65,6 +64,14 @@ public class ArithmeticQuestion implements Question
         boolean isHigher;
 
         if(operatorOne == operatorTwo)
+        {
+            isHigher = false;
+        }
+        else if(operatorOne == '*' && operatorTwo == '%')
+        {
+            isHigher = false;
+        }
+        else if(operatorTwo == '*' && operatorOne == '%')
         {
             isHigher = false;
         }
