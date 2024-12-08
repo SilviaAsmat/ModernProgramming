@@ -45,7 +45,7 @@ public class LevelManager
         switch (currentLevel) {
             case BASIC -> isEligible = basic.isUserEligibleForNextLevel();
             case INTERMEDIATE -> isEligible = intermediate.isUserEligibleForNextLevel();
-            case ADVANCED -> isEligible = advanced.isUserEligibleForNextLevel();
+            case ADVANCED -> isEligible = false;
         }
         return isEligible;
     }

@@ -21,7 +21,6 @@ public class Program7
         System.out.println("Welcome! Let's start learning integer arithmetic expressions.");
         int numOfOperators = levelManager.getNumberOfOperatorsForCurrentLevel();
         Question currentQuestion = questionGenerator.generateQuestion(numOfOperators);
-        logger.log("Question: " + currentQuestion.getDisplayName());
         
         boolean isFirstTry = true;
         //Beginning of loop, clarify exit conditions
@@ -31,7 +30,7 @@ public class Program7
             
             System.out.println("Please enter the answer to the following " + levelManager.getLevelDisplayName() + " expression:");
             System.out.println(currentQuestion.getDisplayName());
-            
+            logger.log("Question: " + currentQuestion.getDisplayName());
             String input = scanner.nextLine();
             System.out.println("You entered: " + input);
             logger.log("Input: " + input);
@@ -48,7 +47,7 @@ public class Program7
                     logger.log("Would you like to move to next level or exit?(Y/N/Exit)");
                     input = scanner.nextLine();
                     logger.log("Input: " + input);
-                    switch (input) {
+                    switch (input.toUpperCase()) {
                         case "Y" -> {
                             levelManager.moveToNextLevel();
                         }
@@ -63,9 +62,25 @@ public class Program7
                         default -> System.out.println("Invalid Input");
                     }
                 }
+                else // Advanced level, can no longer level up
+                {
+                    System.out.println("Would you like to exit?(Exit)");
+                    logger.log("Would you like to exit?(Exit)");
+                    input = scanner.nextLine();
+                    logger.log("Input: " + input);
+                    switch (input.toUpperCase()) {
+                        case"Exit" -> {
+                            //find way to exit loop
+                            shouldExit = false;
+                            levelManager.displayLevelStats();
+                            logger.log(levelManager.displayLevelStats());
+                        }
+                        default -> System.out.println("Invalid Input");
+                    }
+                }
                 numOfOperators = levelManager.getNumberOfOperatorsForCurrentLevel();
                 currentQuestion = questionGenerator.generateQuestion(numOfOperators); 
-                logger.log("Question: " + currentQuestion.getDisplayName());
+                
                 isFirstTry = true;
             } 
             else 
