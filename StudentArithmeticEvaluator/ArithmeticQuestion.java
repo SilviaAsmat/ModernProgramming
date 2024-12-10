@@ -75,13 +75,9 @@ public class ArithmeticQuestion implements Question
         {
             isHigher = false;
         }
-        else if(operatorOne == '*' || operatorOne == '%')
+        else 
         {
-            isHigher = true;
-        }
-        else
-        {
-            isHigher = false;
+            isHigher = operatorOne == '*' || operatorOne == '%';
         }
         return isHigher;
     }
@@ -98,15 +94,26 @@ public class ArithmeticQuestion implements Question
         for(int i = 1; i < numberOfOperators; i++)
         {
             tokens.add(new Operator(operators[random.nextInt(operators.length)]));
-            tokens.add(new Operand(random.nextInt(10)));
+            tokens.add(new Operand(random.nextInt(1,10)));
         }
+        // tokens.add(new Operand(6));
+        // tokens.add(new Operator('%'));
+        // tokens.add(new Operand(5));
+        // tokens.add(new Operator('*'));
+        // tokens.add(new Operand(7));
+        // tokens.add(new Operator('-'));
+        // tokens.add(new Operand(4));
     }
 
     @Override
     public String getDisplayName() 
     {
-        
-        return tokens.toString();
+        StringBuilder displayName = new StringBuilder();
+        for(ExpressionToken token : tokens)
+        {
+            displayName.append(token.toString());
+        }
+        return displayName.toString();
     }
 
     @Override
