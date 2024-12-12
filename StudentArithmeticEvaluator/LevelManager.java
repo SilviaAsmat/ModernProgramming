@@ -90,4 +90,8 @@ public class LevelManager
         }
         return grades.toString();
     }
-}
+    public Boolean isFinalLevel()
+    {
+        return currentLevel == LevelType.ADVANCED && advanced.isUserEligibleForNextLevel(); // ADVANCED is currently the final level
+    }
+}   
