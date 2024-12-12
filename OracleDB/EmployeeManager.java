@@ -27,10 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.text.*;
 
 public class EmployeeManager {
 
@@ -41,6 +37,7 @@ public class EmployeeManager {
     private static final Scanner scanner = new Scanner(System.in);
     final static String DATE_FORMAT = "dd-MM-yyyy";
     private List<String> employeeTypes = new ArrayList<>();
+	List<String> months = new ArrayList<>(Arrays.asList("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"));
 
     //***************************************************************
     //
@@ -115,9 +112,7 @@ public class EmployeeManager {
 
     private void addEmployee() {
         try {
-            System.out.print("Enter SSN: ");
-            String ssn = scanner.nextLine();
-
+            String ssn = getSSNFromUser();
             System.out.print("Enter first name: ");
             String firstName = scanner.nextLine();
 
@@ -158,153 +153,97 @@ public class EmployeeManager {
     // Returns:   
     //
     //**************************************************************
-
-    private void addPayrollInfo() {
-
-        System.out.print("Enter SSN: ");
-        String ssn = scanner.nextLine();
-        try {
-            switch (getEmployeeType(ssn)) {
-                case "salariedEmployee" -> addSalariedPayroll(ssn);
-                case "commissionEmployee" -> addCommissionPayroll(ssn);
-                case "basePlusCommissionEmployee" -> addPlusCommissionPayroll(ssn);
-                case "hourlyEmployee" -> addHourlyPayroll(ssn);
-                case "pieceEmployees" -> addPiecePayroll(ssn);
-            }
+public void addPayrollInfo()
+  	{
+  		try
+  		{
+			String ssn = getSSNFromUser();
+  			System.out.print("Enter week number: ");
+  			int weekNum = scanner.nextInt();
+  			System.out.print("Enter bonus: ");
+  			double bonus = scanner.nextDouble();
+  			System.out.print("Enter employee type (Salaried, Commission, PlusCommission, Hourly, Piece): ");
+  			String type = scanner.next();
+  			switch (type)
+  			{
+  				case "Salaried" -> 
+  				{
+  					System.out.print("Enter weekly salary");
+  					double salary = scanner.nextDouble();
+  					int numberOfRowsAffected = performExecuteUpdate("INSERT INTO Salaried_Employees VALUES ('" + ssn + "', '" + weekNum + "', '" + salary + "', '" + bonus + "')");
+  		  			System.out.println("Payroll added." + numberOfRowsAffected + " rows affected.");
+  				}
+  				case "Commission" ->
+  				{
+  					System.out.print("Enter gross sales: ");
+  					double grossSales = scanner.nextDouble();
+  					System.out.print("Enter commission rate: ");
+  					double commissionRate = scanner.nextDouble();
+  		  			int numberOfRowsAffected = performExecuteUpdate("INSERT INTO Commission_Employees VALUES ('" + ssn + "', '" + weekNum + "', '" + grossSales + "', '" + commissionRate + "', '" + bonus + "')");
+					System.out.println("Payroll added." + numberOfRowsAffected + " rows affected.");
+  				}
+  				case "PlusCommission" ->
+  				{
+  					System.out.print("Enter gross sales: ");
+  					double grossSales = scanner.nextDouble();
+  					System.out.print("Enter commission rate: ");
+  					double commissionRate = scanner.nextDouble();
+  					System.out.print("Enter weekly salary");
+  					double salary = scanner.nextDouble();
+  		  			int numberOfRowsAffected = performExecuteUpdate("INSERT INTO Plus_Commission_Employees VALUES ('" + ssn + "', '" + weekNum + "', '" + grossSales + "', '" + commissionRate + "', '" + salary + "', '" + bonus + "')");
+  		  			System.out.println("Payroll added." + numberOfRowsAffected + " rows affected.");
+  				}
+  				case "Hourly" ->
+  				{
+  					System.out.print("Enter hours worked: ");
+  					int hoursWorked = scanner.nextInt();
+  					System.out.print("Enter pay rate: ");
+  					double payRate = scanner.nextDouble();
+  		  			int numberOfRowsAffected = performExecuteUpdate("INSERT INTO Hourly_Employees VALUES ('" + ssn + "', '" + weekNum + "', '" + hoursWorked + "', '" + payRate + "', '" + bonus + "')");
+					System.out.println("Payroll added." + numberOfRowsAffected + " rows affected.");
+  				}
+  				case "Piece" ->
+  				{
+  					System.out.print("Enter number of pieces: ");
+  					int pieces = scanner.nextInt();
+  					System.out.print("Enter piece rate: ");
+  					double pieceRate = scanner.nextDouble();
+  		  			int numberOfRowsAffected = performExecuteUpdate("INSERT INTO Piece_Employees VALUES ('" + ssn + "', '" + weekNum + "', '" + pieceRate + "', '" + pieces + "', '" + bonus + "')");
+  		  			System.out.println("Payroll added." + numberOfRowsAffected + " rows affected.");
+  				}
+  				default -> System.out.println("Invalid employee type please try again!");
+  					
+  			}
+  		} catch (Exception e)
+  		{
+  			System.out.println("Invalid input given for payroll: " + e + " please try again!");
+  		}
+  	}
+	 //***************************************************************
+	//
+	// Method:      performExecuteUpdate
+	//
+	// Description: takes a query that uses .executeUpdate and returns the 
+	//			  number of rows affected. (throws SQLException which is handled in caller methods)
+	//
+	// Parameters:  1 String 1 Connection
+	//
+	// Returns:     int
+	//
+	//**************************************************************
+  public int performExecuteUpdate(String query)
+  {
+    int rowsAffected = 0;
+    try {
+		String sql = query;
+        PreparedStatement command;
+        command = connection.prepareStatement(sql);
+		rowsAffected = command.executeUpdate();
         } catch (SQLException e) {
-
-        }
-
-    }
-
-    private void addPiecePayroll(String ssn) throws SQLException {
-        System.out.print("Enter week number (1-52): ");
-        int week = scanner.nextInt();
-        System.out.print("Enter piece rate: ");
-        double pieceRate = scanner.nextDouble();
-        System.out.print("Enter number of pieces produced: ");
-        int pieces = scanner.nextInt();
-        System.out.print("Enter bonus: ");
-        double bonus = scanner.nextDouble();
-        scanner.nextLine(); // Clear buffer
-
-        String query = "INSERT INTO PIECE_EMPLOYEES (SSN, Week_Number, Piece_Rate, Number_Pieces, Bonus) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, ssn);
-            stmt.setInt(2, week);
-            stmt.setDouble(3, pieceRate);
-            stmt.setInt(4, pieces);
-            stmt.setDouble(5, bonus);
-            stmt.executeUpdate();
-            System.out.println("Piece payroll added successfully.");
-        }
-    }
-
-    private void addPlusCommissionPayroll(String ssn) throws SQLException {
-        System.out.print("Enter week number (1-52): ");
-        int week = scanner.nextInt();
-        System.out.print("Enter base salary: ");
-        double baseSalary = scanner.nextDouble();
-        System.out.print("Enter gross sales: ");
-        double grossSales = scanner.nextDouble();
-        System.out.print("Enter commission rate: ");
-        double commissionRate = scanner.nextDouble();
-        System.out.print("Enter bonus: ");
-        double bonus = scanner.nextDouble();
-        scanner.nextLine(); // Clear buffer
-
-        String query = "INSERT INTO PLUS_COMMISSION_EMPLOYEES (SSN, Week_Number, Base_Salary, Gross_Sales, Commission_Rate, Bonus) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, ssn);
-            stmt.setInt(2, week);
-            stmt.setDouble(3, baseSalary);
-            stmt.setDouble(4, grossSales);
-            stmt.setDouble(5, commissionRate);
-            stmt.setDouble(6, bonus);
-            stmt.executeUpdate();
-            System.out.println("Base-plus-commission payroll added successfully.");
-        }
-    }
-
-    private void addCommissionPayroll(String ssn) throws SQLException {
-        System.out.print("Enter week number (1-52): ");
-        int week = scanner.nextInt();
-        System.out.print("Enter gross sales: ");
-        double grossSales = scanner.nextDouble();
-        System.out.print("Enter commission rate: ");
-        double commissionRate = scanner.nextDouble();
-        System.out.print("Enter bonus: ");
-        double bonus = scanner.nextDouble();
-        scanner.nextLine(); // Clear buffer
-
-        String query = "INSERT INTO COMMISSION_EMPLOYEES (SSN, Week_Number, Gross_Sales, Commission_Rate, Bonus) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, ssn);
-            stmt.setInt(2, week);
-            stmt.setDouble(3, grossSales);
-            stmt.setDouble(4, commissionRate);
-            stmt.setDouble(5, bonus);
-            stmt.executeUpdate();
-            System.out.println("Commission payroll added successfully.");
-        }
-    }
-
-    private String getEmployeeType(String ssn) {
-        String query = "SELECT Employee_Type FROM EMPLOYEES WHERE SSN = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, ssn);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("Employee_Type");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error retrieving employee type: " + e.getMessage());
-        }
-        return null;
-    }
-
-    private void addHourlyPayroll(String ssn) throws SQLException {
-        System.out.print("Enter week number (1-52): ");
-        int week = scanner.nextInt();
-        System.out.print("Enter hours worked: ");
-        double hours = scanner.nextDouble();
-        System.out.print("Enter pay rate: ");
-        double payRate = scanner.nextDouble();
-        System.out.print("Enter bonus: ");
-        double bonus = scanner.nextDouble();
-        scanner.nextLine(); // Clear buffer
-
-        String query = "INSERT INTO HOURLY_EMPLOYEES (SSN, Week_Number, Hours_Worked, Pay_Rate, Bonus) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, ssn);
-            stmt.setInt(2, week);
-            stmt.setDouble(3, hours);
-            stmt.setDouble(4, payRate);
-            stmt.setDouble(5, bonus);
-            stmt.executeUpdate();
-            System.out.println("Hourly payroll added successfully.");
-        }
-    }
-
-    private void addSalariedPayroll(String ssn) throws SQLException {
-        System.out.print("Enter week number (1-52): ");
-        int week = scanner.nextInt();
-        System.out.print("Enter weekly salary: ");
-        double salary = scanner.nextDouble();
-        System.out.print("Enter bonus: ");
-        double bonus = scanner.nextDouble();
-        scanner.nextLine(); // Clear buffer
-
-        String query = "INSERT INTO SALARIED_EMPLOYEES (SSN, Week_Number, Salary, Bonus) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, ssn);
-            stmt.setInt(2, week);
-            stmt.setDouble(3, salary);
-            stmt.setDouble(4, bonus);
-            stmt.executeUpdate();
-            System.out.println("Salaried payroll added successfully.");
-        }
-    }
+			System.out.println("Error: " + e);
+		}
+    return rowsAffected;
+  }
 
     //***************************************************************
     //
@@ -318,14 +257,14 @@ public class EmployeeManager {
     //
     //**************************************************************
     private void increaseSalaryBasePlusCommission() {
-        try {
-            String query = "UPDATE PLUS_COMMISSION_EMPLOYEES SET Base_Salary = Base_Salary * 1.12";
-            preparedStatement = connection.prepareStatement(query);
-            int rowsUpdated = preparedStatement.executeUpdate();
-            System.out.println("Updated " + rowsUpdated + " employees' base salaries.");
-        } catch (SQLException e) {
-            System.err.println("Error updating salaries: " + e.getMessage());
-        }
+        try 
+  		{
+	  		int numberOfRowsAffected = performExecuteUpdate("UPDATE Plus_Commission_Employees SET Base_Salary = Base_Salary * 1.12");
+	  		System.out.println("Base Salary increased for " + numberOfRowsAffected + " employees.");
+  		} catch (Exception e)
+  		{
+  			System.out.println("Error: " + e);
+  		}
     }
     //***************************************************************
     //
@@ -338,20 +277,13 @@ public class EmployeeManager {
     // Returns:   
     //
     //**************************************************************
-
-    // String sql = "SELECT " + columns + " FROM Employees WHERE SSN = ?";
-    // PreparedStatement pstmt = connection.prepareStatement(sql));
-    // pstmt.setString(1, ssn);
-    // ResultSet rs = pstmt.executeQuery();
     private void addBirthdayBonus() {
-        for (String emp : employeeTypes) {
-            String query = "UPDATE " + emp + " SET Bonus = Bonus + 200 WHERE EXTRACT(MONTH FROM Birthday) = EXTRACT(MONTH FROM SYSDATE)";
-            try (PreparedStatement stmt = connection.prepareStatement(query)) {
-                int rowsUpdated = stmt.executeUpdate();
-                System.out.println("Updated " + rowsUpdated + " employees in " + emp + " with birthday bonuses.");
-            } catch (SQLException e) {
-                System.err.println("Error updating bonuses for " + emp + ": " + e.getMessage());
-            }
+        for (String emp : employeeTypes) 
+        {
+            String query = "UPDATE " + emp + " SET Bonus = Bonus + 200 WHERE SSN IN (SELECT SSN FROM Employees WHERE EXTRACT(MONTH FROM Birthday) = EXTRACT(MONTH FROM SYSDATE))";
+            // UPDATE Plus_Commission_Employees SET Bonus = Bonus + 200 WHERE SSN IN (SELECT SSN FROM Employees WHERE EXTRACT(MONTH FROM Birthday) = EXTRACT(MONTH FROM SYSDATE)
+            int rowsUpdated = performExecuteUpdate(query);
+			System.out.println("Updated " + rowsUpdated + " employees in " + emp + " with birthday bonuses.");
         }
     }
     //***************************************************************
@@ -367,18 +299,9 @@ public class EmployeeManager {
     //**************************************************************
 
     public void addCommmissionEmployeeBonus() {
-        try {
-            String query = """
-                    UPDATE COMMISSION_EMPLOYEES
-                    SET Bonus = Bonus + 200
-                    WHERE Gross_Sales > 9000
-                    """;
-            preparedStatement = connection.prepareStatement(query);
-            int rowsUpdated = preparedStatement.executeUpdate();
-            System.out.println("Updated " + rowsUpdated + " employees with sales bonuses.");
-        } catch (SQLException e) {
-            System.err.println("Error adding sales bonuses: " + e.getMessage());
-        }
+        String query = "UPDATE COMMISSION_EMPLOYEES SET Bonus = Bonus + 200 WHERE Gross_Sales > 9000";
+		int rowsUpdated = performExecuteUpdate(query);
+		System.out.println("Updated " + rowsUpdated + " employees with sales bonuses.");
     }
     //***************************************************************
     //
@@ -394,22 +317,23 @@ public class EmployeeManager {
 
     public void displayEmployeeInfo() {
         try {
-            System.out.print("Enter employee SSN: ");
-            String ssn = scanner.nextLine();
-
-            String query = "SELECT * FROM EMPLOYEES WHERE SSN = ?";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, ssn);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                System.out.println("SSN: " + resultSet.getString("SSN")
-                        + ", Name: " + resultSet.getString("First_Name") + " " + resultSet.getString("Last_Name"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error displaying employee info: " + e.getMessage());
-
-        }
+			String ssn = getSSNFromUser();
+			System.out.print("Enter columns to display separated by commas (SSN,First_Name,Last_Name,Birthday,Employee_Type,Department_Name): ");
+			String columns = scanner.nextLine();
+			ResultSet commandResult = getResultSet("SELECT " + columns + " FROM Employees WHERE SSN = '" + ssn + "'", connection);
+			while(commandResult.next())
+			{
+				for (String column : columns.split(","))
+				{
+					System.out.print(column + ": " + commandResult.getString(column.trim()) + "\t");
+				}
+				System.out.println();
+			}
+			
+		} catch (Exception e)
+		{
+			System.out.println("Invalid input given for employee: " + e + " please try again!");
+		}
     }
     //***************************************************************
     //
@@ -424,26 +348,17 @@ public class EmployeeManager {
     //**************************************************************
 
     public void displayFromLastName() {
-        System.out.print("Enter the last name: ");
-        String lastName = scanner.nextLine();
-
-        String query = "SELECT * FROM EMPLOYEES WHERE UPPER(Last_Name) = UPPER(?) ORDER BY First_Name";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, lastName);
-            resultSet = stmt.executeQuery();
-
-            System.out.println("Employees with last name " + lastName + ":");
-            while (resultSet.next()) {
-                System.out.println("SSN: " + resultSet.getString("SSN")
-                        + ", Name: " + resultSet.getString("First_Name") + " " + resultSet.getString("Last_Name")
-                        + ", Birthday: " + resultSet.getString("Birthday")
-                        + ", Type: " + resultSet.getString("Employee_Type")
-                        + ", Department: " + resultSet.getString("Department_Name"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching records: " + e.getMessage());
-        }
+        try {
+			System.out.print("Enter last name: ");
+			  String last = scanner.nextLine();
+			  ResultSet commandResult = getResultSet("SELECT * FROM Employees WHERE Last_Name = '" + last + "' ORDER BY First_Name", connection);
+			  while(commandResult.next())
+			  {
+				  System.out.println("SSN: " + commandResult.getString("SSN") + "\tFirst Name: " + commandResult.getString("First_Name") + "\tLast Name: " + commandResult.getString("Last_Name") + "\tBirthday: " + commandResult.getString("Birthday") + "\tEmployee Type: " + commandResult.getString("Employee_Type") + "\tDepartment: " + commandResult.getString("Department_Name"));
+			  }
+		} catch (SQLException e) {
+				System.out.println("Invalid input given for employees: " + e + " please try again!");
+		}
     }
     //***************************************************************
     //
@@ -458,27 +373,19 @@ public class EmployeeManager {
     //**************************************************************
 
     public void displayByBirthdayMonth() {
-        System.out.print("Enter the birth month (1-12): ");
-        int month = scanner.nextInt();
-        scanner.nextLine();  // Clear buffer
-
-        String query = "SELECT * FROM EMPLOYEES WHERE EXTRACT(MONTH FROM Birthday) = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, month);
-            resultSet = stmt.executeQuery();
-
-            System.out.println("Employees born in month " + month + ":");
-            while (resultSet.next()) {
-                System.out.println("SSN: " + resultSet.getString("SSN")
-                        + ", Name: " + resultSet.getString("First_Name") + " " + resultSet.getString("Last_Name")
-                        + ", Birthday: " + resultSet.getString("Birthday")
-                        + ", Type: " + resultSet.getString("Employee_Type")
-                        + ", Department: " + resultSet.getString("Department_Name"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching records: " + e.getMessage());
-        }
+        try {
+			System.out.print("Enter month name: ");
+			  String month = scanner.nextLine();
+			  int monthInt = months.indexOf(month.toUpperCase()) + 1;
+			  ResultSet commandResult = getResultSet("SELECT * FROM Employees WHERE EXTRACT(MONTH FROM Birthday) = '" + monthInt + "' ORDER BY Last_Name, First_Name", connection);
+			  while(commandResult.next())
+			  {
+				  System.out.println("SSN: " + commandResult.getString("SSN") + "\tFirst Name: " + commandResult.getString("First_Name") + "\tLast Name: " + commandResult.getString("Last_Name") + "\tBirthday: " + commandResult.getString("Birthday") + "\tEmployee Type: " + commandResult.getString("Employee_Type") + "\tDepartment: " + commandResult.getString("Department_Name"));
+			  }
+		} catch (SQLException e)
+		{
+				System.out.println("Invalid input given for month: " + e + " please try again!");
+		  }
     }
     //***************************************************************
     //
@@ -497,49 +404,18 @@ public class EmployeeManager {
 
         System.out.print("Enter the ending last name: ");
         String endLastName = scanner.nextLine();
-
-        String query = "SELECT * FROM EMPLOYEES WHERE UPPER(Last_Name) BETWEEN UPPER(?) AND UPPER(?) ORDER BY Last_Name, First_Name";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, startLastName);
-            stmt.setString(2, endLastName);
-            ResultSet resultSet = stmt.executeQuery();
-
-            System.out.println("Employees with last names between " + startLastName + " and " + endLastName + ":");
-            while (resultSet.next()) {
-                System.out.println("SSN: " + resultSet.getString("SSN")
-                        + ", Name: " + resultSet.getString("First_Name") + " " + resultSet.getString("Last_Name")
-                        + ", Birthday: " + resultSet.getString("Birthday")
-                        + ", Type: " + resultSet.getString("Employee_Type")
-                        + ", Department: " + resultSet.getString("Department_Name"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching records: " + e.getMessage());
-        }
+		try{
+        ResultSet commandResult = getResultSet("SELECT * FROM Employees WHERE Last_Name BETWEEN '" + startLastName + "' AND '" + endLastName + "' ORDER BY Last_Name, First_Name", connection);
+  		  while(commandResult.next())
+  		  {
+  			  System.out.println("SSN: " + commandResult.getString("SSN") + "\tFirst Name: " + commandResult.getString("First_Name") + "\tLast Name: " + commandResult.getString("Last_Name") + "\tBirthday: " + commandResult.getString("Birthday") + "\tEmployee Type: " + commandResult.getString("Employee_Type") + "\tDepartment: " + commandResult.getString("Department_Name"));
+  		  }
+	  } catch (SQLException e)
+	  {
+  			System.out.println("Invalid input given for names: " + e + " please try again!");
+  	  }
     }
-    //***************************************************************
-    //
-    // Method:      
-    //
-    // Description: 
-    //
-    // Parameters:  
-    //
-    // Returns:   
-    //
-    //**************************************************************
-    private List<String> getTableColumns(String tableName) {
-        List<String> columns = new ArrayList<>();
-        String query = "SELECT column_name FROM all_tab_columns WHERE table_name = tableName";
-        try {
-            ResultSet resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        return columns;
-    }
     //***************************************************************
     //
     // Method:      
@@ -554,14 +430,17 @@ public class EmployeeManager {
 
     private String getSSNFromUser() {
         String input = "";
-        while (!input.equals("")) {
-            System.out.println("Enter SSN (0000-00-0000): ");
+        while (input.equals("")) 
+        {
+            System.out.println("Enter SSN (000-00-0000): ");
             input = scanner.nextLine();
             String[] columns = input.split("-");
             if (columns.length != 3) {
                 input = "";
                 System.out.println("Invalid input. Too many hyphens");
-            } else if (columns[0].length() != 4 || columns[1].length() != 2 || columns[2].length() != 4) {
+            } 
+            else if (columns[0].length() != 3 || columns[1].length() != 2 || columns[2].length() != 4) 
+            {
                 input = "";
                 System.out.println("Invalid input. Incorrect amount of numbers");
             }
@@ -598,7 +477,7 @@ public class EmployeeManager {
     //**************************************************************
     private String getDateFromUser() {
         String input = "";
-        List<String> months = new ArrayList<String>(Arrays.asList("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"));
+        
         while (!input.equals("")) {
             System.out.println("Enter Date (DD-MMM-YYYY) (01-JAN-2000): ");
             input = scanner.nextLine();
@@ -610,31 +489,18 @@ public class EmployeeManager {
             } else if (!months.contains(columns[1])) {
                 input = "";
                 System.out.println("Invalid month. Use 3 letter format.");
-            } else {
-                String date = columns[0] + "-" + months.get(months.indexOf(columns[1])) + 1 + "-" + columns[2];
-                //TODO: Validate date format/existence
-                input = "";
-                System.out.println("Invalid input. Incorrect amount of numbers");
             }
         }
         return input;
     }
 
-    public static boolean isDateValid(String date) {
-        boolean isValid = false;
-        try {
-            DateFormat df = new SimpleDateFormat(DATE_FORMAT);// dd-mm-yyyy
-            df.setLenient(false);
-            df.parse(date);
-            isValid = true;
-        } catch (ParseException e) {
-            isValid = false;
-        }
-        return isValid;
-    }
-
-    private void toQuery(String query) {
-
-    }
+	public ResultSet getResultSet(String query, Connection connection) throws SQLException
+  	{
+	  	String sql = query;
+	  	PreparedStatement command = connection.prepareStatement(sql);
+	  	ResultSet commandResult = command.executeQuery();
+	  	return commandResult;
+	  
+  	}
 
 }
